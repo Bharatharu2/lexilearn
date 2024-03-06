@@ -87,7 +87,7 @@ class _LetterExercisePageState extends State<LetterExercisePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blue,
         title: Text('Letter Exercises'),
       ),
       body: PageView.builder(
