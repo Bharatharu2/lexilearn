@@ -188,7 +188,7 @@ class _LetterExercisePageState extends State<LetterExercisePage> {
                         speakLetter(letterInfoList[index].letter);
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
+                        backgroundColor : Colors.blue,
                       ),
                       child: Text('Listen Letter',
                           style: TextStyle(color: Colors.white)),
@@ -199,7 +199,7 @@ class _LetterExercisePageState extends State<LetterExercisePage> {
                         speakDescription(letterInfoList[index].description);
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
+                        backgroundColor: Colors.blue,
                       ),
                       child: Text('Listen Description',
                           style: TextStyle(color: Colors.white)),
