@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:lexilearn/LetterExercisePage.dart';
+import 'package:lexilearn/LetterArrange.dart';
+import 'package:lexilearn/AlphabetListeningPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -44,8 +46,25 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-            Section(title: 'Feature 1'),
-            Section(title: 'Feature 2'),
+            Section(
+                title: 'LexiPuzzle',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Feature1Page(),
+                    ),
+                  );
+                }),
+            Section(
+                title: 'AlphabetHarmony',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AlphabetListeningPage()),
+                  );
+                }),
             Section(title: 'Feature 3'),
             Section(title: 'Feature 4'),
             Section(title: 'Feature 5'),

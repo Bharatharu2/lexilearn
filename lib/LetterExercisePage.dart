@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'ExercisePage.dart';
 
 void main() {
   runApp(MyApp());
@@ -81,6 +82,7 @@ class _LetterExercisePageState extends State<LetterExercisePage> {
     LetterInfo(
         letter: 'Z', smallLetter: 'z', image: 'Z.jpg', description: 'Zebra'),
     // Your letter information list
+    // Add more letters as needed
   ];
 
   @override
@@ -180,31 +182,44 @@ class _LetterExercisePageState extends State<LetterExercisePage> {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        speakLetter(letterInfoList[index].letter);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
+                ElevatedButton(
+                  onPressed: () {
+                    speakLetter(letterInfoList[index].letter);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                  ),
+                  child: Text('Listen Letter',
+                      style: TextStyle(color: Colors.white)),
+                ),
+                SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    speakDescription(letterInfoList[index].description);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                  ),
+                  child: Text('Listen Description',
+                      style: TextStyle(color: Colors.white)),
+                ),
+                SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ExercisePage(
+                          selectedLetter: letterInfoList[index].letter,
+                        ),
                       ),
-                      child: Text('Listen Letter',
-                          style: TextStyle(color: Colors.white)),
-                    ),
-                    SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        speakDescription(letterInfoList[index].description);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
-                      ),
-                      child: Text('Listen Description',
-                          style: TextStyle(color: Colors.white)),
-                    ),
-                  ],
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                  ),
+                  child:
+                      Text('Exercise', style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
