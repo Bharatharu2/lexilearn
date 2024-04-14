@@ -38,8 +38,10 @@ dependencies:
   flutter_html: ^3.0.0-beta.2
   flutter_layout_grid: ^2.0.0
   flutter_tts: ^3.8.5
-  google_fonts: ^6.1.0
+  google_fonts: ^6.2.1
   audioplayers: ^5.2.1
+  firebase_auth: ^4.19.1
+  firebase_core: ^2.29.0
 
 
 dev_dependencies:
@@ -67,6 +69,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/
+    - images2/
     - assets/audio/
 
   #   - images/a_dot_ham.jpeg
@@ -82,10 +85,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+     - family: OpenDyslexic
+       fonts:
+         - asset: font/OpenDyslexic-Regular.otf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
