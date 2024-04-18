@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:lexilearn/LetterExercisePage.dart';
-import 'package:lexilearn/LetterArrange.dart';
-import 'package:lexilearn/AlphabetListeningPage.dart';
-import 'package:lexilearn/WordMatchingGame.dart';
-import 'package:lexilearn/WordMatchingGame2.dart';
-import 'package:lexilearn/RhymeTimeGame.dart';
-import 'package:lexilearn/TamilUyirEzhuthukal.dart';
-import 'package:lexilearn/TamilUyirEzhuthuKarpom.dart';
+import 'package:lexilearn/English/LetterExercisePage.dart';
+import 'package:lexilearn/English/LetterArrange.dart';
+import 'package:lexilearn/English/AlphabetListeningPage.dart';
+import 'package:lexilearn/English/WordMatchingGame.dart';
+import 'package:lexilearn/English/WordMatchingGame2.dart';
+import 'package:lexilearn/English/RhymeTimeGame.dart';
+import 'package:lexilearn/Tamil/TamilUyirEzhuthukal.dart';
+import 'package:lexilearn/Tamil/TamilUyirEzhuthuKarpom.dart';
+import 'package:lexilearn/Tamil/TamilMaeiAezhithuKarpom.dart';
+import 'package:lexilearn/Tamil/TamilMaeiAezhuthuPayirchi.dart';
+import 'package:lexilearn/Sample.dart';
+import 'package:lexilearn/Numbers/LearnNumbers.dart';
+import 'package:lexilearn/Numbers/NumberExercise.dart';
+import 'package:lexilearn/Tamil/TamilRhymeTime.dart';
+import 'package:lexilearn/Tamil/TamilWordMatch.dart';
+import 'package:lexilearn/Tamil/TamilImageSelectionGame.dart';
+import 'package:lexilearn/Numbers/NumberTracing.dart';
+import 'package:lexilearn/Tamil/TamilLetterArrange.dart';
 
 void main() {
   runApp(MyApp());
@@ -45,6 +55,7 @@ class CardOption extends StatelessWidget {
             style: TextStyle(
               color: Colors.blue,
               fontSize: 18,
+              fontFamily: 'openDyslexic',
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -73,7 +84,7 @@ class IntroductionPage extends StatelessWidget {
           ),
           Center(
             child: SizedBox(
-              height: 600, // Specify the desired height
+              height: 300, // Specify the desired height
               width: 400, // Specify the desired width
               child: Padding(
                 padding: EdgeInsets.only(
@@ -82,7 +93,7 @@ class IntroductionPage extends StatelessWidget {
                   elevation: 10,
                   margin: EdgeInsets.all(10),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(30),
                     child: Image.asset(
                       'images/Disney.jpg', // Replace with your image path
                       fit: BoxFit.cover,
@@ -162,6 +173,12 @@ class HomePage extends StatelessWidget {
                   CardOption(
                     title: 'Numbers',
                     onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Numbers(),
+                        ),
+                      );
                       // Navigate to Numbers page
                     },
                   ),
@@ -199,6 +216,17 @@ class EnglishPage extends StatelessWidget {
               },
             ),
             Section(
+              title: 'Practice Alphabet',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AlphabetListeningPage(),
+                  ),
+                );
+              },
+            ),
+            Section(
               title: 'LexiPuzzle',
               onTap: () {
                 Navigator.push(
@@ -210,18 +238,7 @@ class EnglishPage extends StatelessWidget {
               },
             ),
             Section(
-              title: 'Alphabet Listening',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AlphabetListeningPage(),
-                  ),
-                );
-              },
-            ),
-            Section(
-              title: 'Word Matching Game',
+              title: 'Word Quest',
               onTap: () {
                 Navigator.push(
                   context,
@@ -232,7 +249,7 @@ class EnglishPage extends StatelessWidget {
               },
             ),
             Section(
-              title: 'Word Matching Game 2',
+              title: 'Image Quest',
               onTap: () {
                 Navigator.push(
                   context,
@@ -290,6 +307,124 @@ class TamilPage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => TamilAlphabetListeningPage(),
+                  ),
+                );
+              },
+            ),
+            Section(
+              title: 'மெய் எழுத்து கற்போம்',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TamilMaeiAezhuthuKarpom(),
+                  ),
+                );
+              },
+            ),
+            Section(
+              title: 'மெய் எழுத்து பயிற்சி',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TamilMaeiAezhuthuPayirchi(),
+                  ),
+                );
+              },
+            ),
+            Section(
+              title: 'தமிழ் வார்த்தை பயிற்சி',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TamilWordMatchingGame(),
+                  ),
+                );
+              },
+            ),
+            Section(
+              title: 'படம் கண்டு சொல் ',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TamilImageSelectionGame(),
+                  ),
+                );
+              },
+            ),
+            Section(
+              title: 'தமிழ் இசையில் ஒத்திசை பயிற்சி',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RhymeTimeGameTamil(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Numbers extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Number Topics'),
+        backgroundColor: Colors.blue,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Section(
+              title: 'Learn Numbers',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NumberLearningPage(),
+                  ),
+                );
+              },
+            ),
+            Section(
+              title: 'Practice Numbers',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NumberExercise(),
+                  ),
+                );
+              },
+            ),
+            Section(
+              title: 'Count Number',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MonkeyCountingPage(),
+                  ),
+                );
+              },
+            ),
+            Section(
+              title: 'Word Matching Game',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WordMatchingGame(),
                   ),
                 );
               },
