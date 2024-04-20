@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class NumberExercise extends StatefulWidget {
   @override
@@ -14,6 +15,9 @@ class _NumberExerciseState extends State<NumberExercise> {
   bool isCorrectAnswer = false;
   bool isFirstTime = true;
   bool isListenButtonPressed = false;
+  int totalQuestionsAttempted = 0;
+  int totalCorrectAnswers = 0;
+  int totalWrongAnswers = 0;
 
   List<String> numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
@@ -76,19 +80,23 @@ class _NumberExerciseState extends State<NumberExercise> {
     }
 
     setState(() {
+      totalQuestionsAttempted++;
       selectedNumber = number;
       isCorrectAnswer = number == currentNumber;
     });
     if (isCorrectAnswer) {
+      totalCorrectAnswers++;
       playSound("audio/yay.mp3");
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Correct Answer!'),
+          title: Text('Correct Answer!',
+              style:
+                  TextStyle(color: Colors.green, fontFamily: 'OpenDyslexic')),
           content: Image.asset(
-            "images/correct.gif",
-            width: 100,
-            height: 100,
+            "images/Monkey2.gif",
+            width: 150,
+            height: 150,
           ),
         ),
       ).then((value) {
@@ -98,15 +106,19 @@ class _NumberExerciseState extends State<NumberExercise> {
         });
       });
     } else {
+      totalWrongAnswers++;
       playSound("audio/wrong.mp3");
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Wrong Answer!'),
+          title: Text(
+            'Wrong Answer!',
+            style: TextStyle(color: Colors.red, fontFamily: 'openDyslexic'),
+          ),
           content: Image.asset(
             "images/tomwrong.gif",
-            width: 100,
-            height: 100,
+            width: 150,
+            height: 150,
           ),
         ),
       ).then((value) {
@@ -196,6 +208,80 @@ class _NumberExerciseState extends State<NumberExercise> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text('Progress Report'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    color: totalCorrectAnswers / totalQuestionsAttempted >= 0.6
+                        ? Colors.green
+                        : Colors.red,
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      'Score: ${(totalCorrectAnswers / totalQuestionsAttempted * 100).toStringAsFixed(2)}%',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 200,
+                    child: charts.BarChart(
+                      _createSampleData(),
+                      animate: true,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text('Total Questions Attempted: $totalQuestionsAttempted'),
+                  Text('Total Correct Answers: $totalCorrectAnswers'),
+                  Text('Total Wrong Answers: $totalWrongAnswers'),
+                ],
+              ),
+            ),
+          );
+        },
+        child: Icon(Icons.bar_chart),
+      ),
     );
   }
+
+  List<charts.Series<ProgressData, String>> _createSampleData() {
+    final List<ProgressData> data = [
+      ProgressData('Correct', totalCorrectAnswers),
+      ProgressData('Wrong', totalWrongAnswers),
+    ];
+
+    return [
+      charts.Series<ProgressData, String>(
+        id: 'Progress',
+        domainFn: (ProgressData progress, _) => progress.status,
+        measureFn: (ProgressData progress, _) => progress.value,
+        data: data,
+        colorFn: (ProgressData progress, _) {
+          if (progress.status == 'Correct') {
+            return charts.MaterialPalette.green.shadeDefault;
+          } else {
+            return charts.MaterialPalette.red.shadeDefault;
+          }
+        },
+        labelAccessorFn: (ProgressData progress, _) =>
+            '${progress.status}: ${progress.value}',
+      )
+    ];
+  }
+}
+
+class ProgressData {
+  final String status;
+  final int value;
+
+  ProgressData(this.status, this.value);
 }

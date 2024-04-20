@@ -18,6 +18,7 @@ import 'package:lexilearn/Tamil/TamilWordMatch.dart';
 import 'package:lexilearn/Tamil/TamilImageSelectionGame.dart';
 import 'package:lexilearn/Numbers/NumberTracing.dart';
 import 'package:lexilearn/Tamil/TamilLetterArrange.dart';
+import 'package:lexilearn/Numbers/NumberPractice.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,9 +27,29 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: IntroductionPage(),
+    return BackgroundApp(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: IntroductionPage(),
+      ),
+    );
+  }
+}
+
+class BackgroundApp extends StatelessWidget {
+  final Widget child;
+  const BackgroundApp({Key? key, required this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("images/background.jpg"),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: child,
     );
   }
 }
@@ -69,51 +90,59 @@ class IntroductionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 70),
-            child: Text(
-              "Welcome to LexiLearn",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/background.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                "Welcome to LexiLearn",
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          Center(
-            child: SizedBox(
-              height: 300, // Specify the desired height
-              width: 400, // Specify the desired width
-              child: Padding(
-                padding: EdgeInsets.only(
-                    top: 10), // Adjust the top padding as needed
-                child: Card(
-                  elevation: 10,
-                  margin: EdgeInsets.all(10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
-                    child: Image.asset(
-                      'images/Disney.jpg', // Replace with your image path
-                      fit: BoxFit.cover,
+            Center(
+              child: SizedBox(
+                height: 320, // Specify the desired height
+                width: 400, // Specify the desired width
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      top: 20), // Adjust the top padding as needed
+                  child: Card(
+                    elevation: 10,
+                    margin: EdgeInsets.all(15),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(17),
+                      child: Image.asset(
+                        'images/welcome.gif', // Replace with your image path
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-          SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
-            },
-            child: Text('Get Started'),
-          ),
-        ],
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
+              child: Text('Get Started'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -123,70 +152,114 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('What do you want to learn?'),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Text(
-              'Select what you want to Learn',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/background.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 100), // Adjusted padding
+              child: Text(
+                'What do you want to learn?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontFamily: 'OpenDyslexic',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ),
-          ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  CardOption(
-                    title: 'English',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EnglishPage(),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EnglishPage(),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.asset(
+                            'images/ABCD.gif', // Replace with English image path
+                            width: 300, // Adjust the width as needed
+                            height: 150, // Adjust the height as needed
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      );
-                    },
-                  ),
-                  SizedBox(height: 10), // Adjust spacing between cards
-                  CardOption(
-                    title: 'தமிழ்',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TamilPage(),
+                      ),
+                    ),
+                    SizedBox(height: 10), // Adjust spacing between images
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TamilPage(),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.asset(
+                            'images/tamil2.gif', // Replace with Tamil image path
+                            width: 300, // Adjust the width as needed
+                            height: 150, // Adjust the height as needed
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      );
-                    },
-                  ),
-                  SizedBox(height: 10), // Adjust spacing between cards
-                  CardOption(
-                    title: 'Numbers',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Numbers(),
+                      ),
+                    ),
+                    SizedBox(height: 10), // Adjust spacing between images
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Numbers(),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.asset(
+                            'images/Numbers.gif', // Replace with Numbers image path
+                            width: 300, // Adjust the width as needed
+                            height: 150, // Adjust the height as needed
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      );
-                      // Navigate to Numbers page
-                    },
-                  ),
-                ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -196,81 +269,155 @@ class EnglishPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true, // Extend background behind app bar
       appBar: AppBar(
-        title: Text('English Topics'),
-        backgroundColor: Colors.blue,
+        title: Padding(
+          padding:
+              const EdgeInsets.only(top: 30), // Adjust top padding as needed
+          child: Text(
+            '    English Topics',
+            style: TextStyle(
+                fontFamily: 'OpenDyslexic', fontWeight: FontWeight.bold),
+          ),
+        ),
+        backgroundColor: Colors.transparent, // Transparent app bar
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Section(
-              title: 'Letter Exercise',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LetterExercisePage(),
-                  ),
-                );
-              },
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              'images/background.jpg', // Replace with your background image path
             ),
-            Section(
-              title: 'Practice Alphabet',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AlphabetListeningPage(),
-                  ),
-                );
-              },
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+              vertical: 100, horizontal: 10), // Adjust padding as needed
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Section(
+                title: 'Letter Exercise',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LetterExercisePage(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20), // Adjust spacing between sections
+              Section(
+                title: 'Practice Alphabet',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AlphabetListeningPage(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20), // Adjust spacing between sections
+              Section(
+                title: 'LexiPuzzle',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Feature1Page(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20), // Adjust spacing between sections
+              Section(
+                title: 'Word Quest',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WordMatchingGame(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20), // Adjust spacing between sections
+              Section(
+                title: 'Image Quest',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WordMatchingGame2(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20), // Adjust spacing between sections
+              Section(
+                title: 'Rhyme Time Game',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RhymeTimeGame(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SectionWithBackground extends StatelessWidget {
+  final ImageProvider backgroundImage;
+  final String title;
+  final VoidCallback onTap;
+  final double width;
+  final double height;
+  final double borderRadius;
+
+  const SectionWithBackground({
+    required this.backgroundImage,
+    required this.title,
+    required this.onTap,
+    this.width = 300,
+    this.height = 150,
+    this.borderRadius = 20,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadius),
+          image: DecorationImage(
+            image: backgroundImage,
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
-            Section(
-              title: 'LexiPuzzle',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Feature1Page(),
-                  ),
-                );
-              },
-            ),
-            Section(
-              title: 'Word Quest',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WordMatchingGame(),
-                  ),
-                );
-              },
-            ),
-            Section(
-              title: 'Image Quest',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WordMatchingGame2(),
-                  ),
-                );
-              },
-            ),
-            Section(
-              title: 'Rhyme Time Game',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RhymeTimeGame(),
-                  ),
-                );
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -281,92 +428,121 @@ class TamilPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true, // Extend background behind app bar
       appBar: AppBar(
-        title: Text('Tamil Topics'),
-        backgroundColor: Colors.blue,
+        title: Padding(
+          padding:
+              const EdgeInsets.only(top: 30), // Adjust top padding as needed
+          child: Text(
+            '    தமிழ் பயிற்சிகள்',
+            style: TextStyle(
+                fontFamily: 'OpenDyslexic', fontWeight: FontWeight.bold),
+          ),
+        ),
+        backgroundColor: Colors.transparent, // Transparent app bar
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Section(
-              title: 'உயிரெழுத்து கற்போம்',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LetterExercisePage2(),
-                  ),
-                );
-              },
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              'images/background.jpg', // Replace with your background image path
             ),
-            Section(
-              title: 'உயிரெழுத்து பயிற்சி',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TamilAlphabetListeningPage(),
-                  ),
-                );
-              },
-            ),
-            Section(
-              title: 'மெய் எழுத்து கற்போம்',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TamilMaeiAezhuthuKarpom(),
-                  ),
-                );
-              },
-            ),
-            Section(
-              title: 'மெய் எழுத்து பயிற்சி',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TamilMaeiAezhuthuPayirchi(),
-                  ),
-                );
-              },
-            ),
-            Section(
-              title: 'தமிழ் வார்த்தை பயிற்சி',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TamilWordMatchingGame(),
-                  ),
-                );
-              },
-            ),
-            Section(
-              title: 'படம் கண்டு சொல் ',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TamilImageSelectionGame(),
-                  ),
-                );
-              },
-            ),
-            Section(
-              title: 'தமிழ் இசையில் ஒத்திசை பயிற்சி',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RhymeTimeGameTamil(),
-                  ),
-                );
-              },
-            ),
-          ],
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+              vertical: 100, horizontal: 10), // Adjust padding as needed
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Section(
+                title: 'உயிரெழுத்து கற்போம்',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LetterExercisePage2(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20), // Adjust spacing between sections
+              Section(
+                title: 'உயிரெழுத்து பயிற்சி',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TamilAlphabetListeningPage(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20), // Adjust spacing between sections
+              Section(
+                title: 'மெய் எழுத்து கற்போம்',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TamilMaeiAezhuthuKarpom(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20), // Adjust spacing between sections
+              Section(
+                title: 'மெய் எழுத்து பயிற்சி',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TamilMaeiAezhuthuPayirchi(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20), // Adjust spacing between sections
+              Section(
+                title: 'தமிழ் வார்த்தை பயிற்சி',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TamilWordMatchingGame(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20), // Adjust spacing between sections
+              Section(
+                title: 'படம் கண்டு சொல் ',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TamilImageSelectionGame(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20),
+              Section(
+                title: 'தமிழ் இசை பயிற்சி',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RhymeTimeGameTamil(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -377,59 +553,85 @@ class Numbers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true, // Extend background behind app bar
       appBar: AppBar(
-        title: Text('Number Topics'),
-        backgroundColor: Colors.blue,
+        title: Padding(
+          padding:
+              const EdgeInsets.only(top: 30), // Adjust top padding as needed
+          child: Text(
+            '    Number Exercises',
+            style: TextStyle(
+                fontFamily: 'OpenDyslexic', fontWeight: FontWeight.bold),
+          ),
+        ),
+        backgroundColor: Colors.transparent, // Transparent app bar
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Section(
-              title: 'Learn Numbers',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => NumberLearningPage(),
-                  ),
-                );
-              },
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              'images/background.jpg', // Replace with your background image path
             ),
-            Section(
-              title: 'Practice Numbers',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => NumberExercise(),
-                  ),
-                );
-              },
-            ),
-            Section(
-              title: 'Count Number',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MonkeyCountingPage(),
-                  ),
-                );
-              },
-            ),
-            Section(
-              title: 'Word Matching Game',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WordMatchingGame(),
-                  ),
-                );
-              },
-            ),
-          ],
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+              vertical: 100, horizontal: 10), // Adjust padding as needed
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Section(
+                title: 'Learn Numbers',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NumberLearningPage(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20), // Adjust spacing between sections
+              Section(
+                title: 'Practice Numbers',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NumberExercise(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20), // Adjust spacing between sections
+              Section(
+                title: 'Count Number',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MonkeyCountingPage(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20), // Adjust spacing between sections
+              Section(
+                title: 'Number Conversion Challenge',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TypicallyExercise(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

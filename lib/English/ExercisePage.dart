@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -23,6 +22,7 @@ class _ExercisePageState extends State<ExercisePage> {
   int totalQuestionsAttempted = 0;
   int totalCorrectAnswers = 0;
   int totalWrongAnswers = 0;
+  List<bool> wordAnswered = [false, false, false, false, false, false];
 
   @override
   void initState() {
@@ -32,7 +32,6 @@ class _ExercisePageState extends State<ExercisePage> {
   }
 
   void generateWords() {
-    // Define 100 words for each letter with the target letter appearing in different positions
     Map<String, List<String>> wordMap = {
       'A': [
         'Apple',
@@ -669,15 +668,12 @@ class _ExercisePageState extends State<ExercisePage> {
       // Define words for other letters similarly
       // ...
     };
-
-    // Randomly select six words for the exercise
     words = wordMap[widget.selectedLetter]!;
     words.shuffle();
     words = words.take(6).toList();
   }
 
   void initializeButtonColors() {
-    // Initialize button colors to blue
     for (int i = 0; i < words.length; i++) {
       buttonColors[i] = Colors.blue;
     }
@@ -764,6 +760,7 @@ class _ExercisePageState extends State<ExercisePage> {
               setState(() {
                 generateWords();
                 initializeButtonColors();
+                wordAnswered = [false, false, false, false, false, false];
               });
             },
             icon: Icon(Icons.refresh),
@@ -772,118 +769,89 @@ class _ExercisePageState extends State<ExercisePage> {
       ),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "Choose the letter you learned",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'openDyslexic',
-                    fontWeight: FontWeight.bold,
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/background.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Choose the letter you learned",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'openDyslexic',
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                for (int i = 0; i < words.length; i++)
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        for (int j = 0; j < words[i].length; j++)
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 4),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                // Check if the selected letter matches the letter in the word
-                                if (words[i][j].toLowerCase() ==
-                                    widget.selectedLetter.toLowerCase()) {
-                                  // Selected letter matches, change button color to green
-                                  setState(() {
-                                    buttonColors[i] = Colors.green;
-                                    showCorrectImage = true;
-                                    showWrongImage = false;
-                                    totalQuestionsAttempted++;
-                                    totalCorrectAnswers++;
-                                  });
-                                  // Play correct sound effect
-                                  playSound("audio/yay.mp3");
-                                  // Set a delayed function to hide the image after 1 second
-                                  Future.delayed(Duration(seconds: 3), () {
-                                    setState(() {
-                                      showCorrectImage = false;
-                                    });
-                                  });
-                                } else {
-                                  // Selected letter does not match, change button color to red
-                                  setState(() {
-                                    buttonColors[i] = Colors.red;
-                                    showWrongImage = true;
-                                    showCorrectImage = false;
-                                    totalQuestionsAttempted++;
-                                    totalWrongAnswers++;
-                                  });
-                                  // Play wrong sound effect
-                                  playSound("audio/wrong.mp3");
-                                  // Set a delayed function to hide the image after 1 second
-                                  Future.delayed(Duration(seconds: 3), () {
-                                    setState(() {
-                                      showWrongImage = false;
-                                    });
-                                  });
-                                }
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith<Color>(
-                                        (states) {
-                                  return buttonColors[i]!;
-                                }),
-                              ),
-                              child: Text(
-                                words[i][j],
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors
-                                      .white, // Change font color to white
-                                  fontFamily:
-                                      'OpenDyslexic', // Apply OpenDyslexic font
+                  SizedBox(height: 20),
+                  for (int i = 0; i < words.length; i++)
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          for (int j = 0; j < words[i].length; j++)
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4),
+                              child: ElevatedButton(
+                                onPressed: wordAnswered[i]
+                                    ? null
+                                    : () {
+                                        if (words[i][j].toLowerCase() ==
+                                            widget.selectedLetter
+                                                .toLowerCase()) {
+                                          setState(() {
+                                            buttonColors[i] = Colors.green;
+                                            showCorrectAnswerDialog();
+                                            totalQuestionsAttempted++;
+                                            totalCorrectAnswers++;
+                                            wordAnswered[i] = true;
+                                          });
+                                          playSound("audio/yay.mp3");
+                                        } else {
+                                          setState(() {
+                                            buttonColors[i] = Colors.red;
+                                            showWrongAnswerDialog();
+                                            totalQuestionsAttempted++;
+                                            totalWrongAnswers++;
+                                          });
+                                          playSound("audio/wrong.mp3");
+                                        }
+                                      },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith<Color>(
+                                          (states) {
+                                    return buttonColors[i]!;
+                                  }),
+                                ),
+                                child: Text(
+                                  words[i][j],
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontFamily: 'OpenDyslexic',
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        SizedBox(
-                            width:
-                                9), // Add space between each word horizontally
-                      ],
+                          SizedBox(
+                              width:
+                                  9), // Add space between each word horizontally
+                        ],
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
-          if (showCorrectImage)
-            Positioned(
-              top: 200,
-              right: 80,
-              child: Image.asset(
-                "images/Monkey2.gif",
-                width: 250,
-                height: 250,
-              ),
-            ),
-          if (showWrongImage)
-            Positioned(
-              top: 100,
-              right: 40,
-              child: Image.asset(
-                "images/thumbsDown.png",
-                width: 200,
-                height: 200,
-              ),
-            ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -891,7 +859,39 @@ class _ExercisePageState extends State<ExercisePage> {
           _showProgressReport(context);
         },
         child: Icon(Icons.bar_chart),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
+      ),
+    );
+  }
+
+  void showCorrectAnswerDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Correct Answer!',
+            style: TextStyle(color: Colors.green, fontFamily: 'OpenDyslexic')),
+        content: Image.asset(
+          "images/Monkey2.gif",
+          width: 150,
+          height: 150,
+        ),
+      ),
+    );
+  }
+
+  void showWrongAnswerDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(
+          'Wrong Answer!',
+          style: TextStyle(color: Colors.red, fontFamily: 'openDyslexic'),
+        ),
+        content: Image.asset(
+          "images/tomwrong.gif",
+          width: 150,
+          height: 150,
+        ),
       ),
     );
   }

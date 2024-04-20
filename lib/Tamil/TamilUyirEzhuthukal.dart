@@ -106,11 +106,13 @@ class _TamilAlphabetListeningPageState
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Correct Answer!'),
+          title: Text('Correct Answer!',
+              style:
+                  TextStyle(color: Colors.green, fontFamily: 'OpenDyslexic')),
           content: Image.asset(
-            "images/correct.gif",
-            width: 100,
-            height: 100,
+            "images/Monkey2.gif",
+            width: 150,
+            height: 150,
           ),
         ),
       ).then((value) {
@@ -125,11 +127,14 @@ class _TamilAlphabetListeningPageState
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Wrong Answer!'),
+          title: Text(
+            'Wrong Answer!',
+            style: TextStyle(color: Colors.red, fontFamily: 'openDyslexic'),
+          ),
           content: Image.asset(
             "images/tomwrong.gif",
-            width: 100,
-            height: 100,
+            width: 150,
+            height: 150,
           ),
         ),
       ).then((value) {

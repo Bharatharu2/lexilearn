@@ -1,4 +1,4 @@
-import 'dart:math';
+mport 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -20,8 +20,7 @@ class _Feature1PageState extends State<Feature1Page> {
   int totalQuestionsAttempted = 0;
   int totalCorrectAnswers = 0;
   int totalWrongAnswers = 0;
-  bool isSubmitted =
-      false; // Flag to track if the correct answer has been submitted
+  bool isSubmitted = false; // Flag to track if the correct answer has been submitted
 
   @override
   void initState() {
@@ -41,57 +40,6 @@ class _Feature1PageState extends State<Feature1Page> {
       'chair',
       'train',
       'water',
-      'phone',
-      'mouse',
-      'piano',
-      'snake',
-      'heart',
-      'Acorn',
-      'Asteroid',
-      'Airport',
-      'bread',
-      'candy',
-      'Christmas',
-      'citadel',
-      'cloud',
-      'coral',
-      'dance',
-      'earth',
-      'elbow',
-      'fairy',
-      'family',
-      'fern',
-      'flask',
-      'gloves',
-      'grapes',
-      'guitar',
-      'hotel',
-      'inkwell',
-      'jasmine',
-      'juice',
-      'latch',
-      'lichen',
-      'locket',
-      'maple',
-      'medal',
-      'mouse',
-      'number',
-      'paste',
-      'peach',
-      'pearls',
-      'racket',
-      'rocket',
-      'sandwich',
-      'smile',
-      'snacks',
-      'tulip',
-      'umpire',
-      'urchin',
-      'vault',
-      'violin',
-      'whale',
-      'whisk',
-      'windmill'
       // Add more words as needed
     ];
   }
@@ -119,24 +67,21 @@ class _Feature1PageState extends State<Feature1Page> {
       isCorrectAnswer = userAnswer == currentWord;
       if (isCorrectAnswer) {
         totalCorrectAnswers++;
-        isSubmitted =
-            true; // Set the flag to true when correct answer is submitted
+        isSubmitted = true; // Set the flag to true when correct answer is submitted
       } else {
         totalWrongAnswers++;
       }
     });
     if (isCorrectAnswer) {
-      playSound("audio/yay.mp3");
+      playSound("audio/correct.mp3");
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Correct Answer!',
-              style:
-                  TextStyle(color: Colors.green, fontFamily: 'OpenDyslexic')),
+          title: Text('Correct Answer!'),
           content: Image.asset(
-            "images/Monkey2.gif",
-            width: 150,
-            height: 150,
+            "assets/images/correct.gif",
+            width: 100,
+            height: 100,
           ),
         ),
       );
@@ -145,14 +90,11 @@ class _Feature1PageState extends State<Feature1Page> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text(
-            'Wrong Answer!',
-            style: TextStyle(color: Colors.red, fontFamily: 'openDyslexic'),
-          ),
+          title: Text('Wrong Answer!'),
           content: Image.asset(
-            "images/tomwrong.gif",
-            width: 150,
-            height: 150,
+            "assets/images/wrong.gif",
+            width: 100,
+            height: 100,
           ),
         ),
       );
@@ -231,7 +173,7 @@ class _Feature1PageState extends State<Feature1Page> {
                         context: context,
                         builder: (_) => AlertDialog(
                           content: Image.asset(
-                            "images/${currentWord.toLowerCase()}.png",
+                            "assets/images/${currentWord.toLowerCase()}.png",
                             width: 200,
                             height: 200,
                           ),
@@ -332,9 +274,7 @@ class _Feature1PageState extends State<Feature1Page> {
               ),
               SizedBox(height: 35),
               ElevatedButton(
-                onPressed: isSubmitted
-                    ? null
-                    : checkAnswer, // Disable if already submitted
+                onPressed: isSubmitted ? null : checkAnswer, // Disable if already submitted
                 child: Text('Submit', style: TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -425,3 +365,4 @@ class ProgressData {
 
   ProgressData(this.status, this.value);
 }
+

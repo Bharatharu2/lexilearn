@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 void main() {
   runApp(MyApp());
@@ -26,7 +27,9 @@ class _MonkeyCountingPageState extends State<MonkeyCountingPage> {
   int correctAnswerIndex = 0;
   List<String> options = [];
   AudioPlayer player = AudioPlayer();
-
+  int totalQuestionsAttempted = 1;
+  int totalCorrectAnswers = 0;
+  int totalWrongAnswers = 0;
   @override
   void initState() {
     super.initState();
@@ -39,9 +42,11 @@ class _MonkeyCountingPageState extends State<MonkeyCountingPage> {
     correctAnswerIndex =
         random.nextInt(4); // Randomly select correct answer index
     List<String> allOptions = List.generate(9, (index) => '${index + 1}');
-    allOptions.shuffle(); // Shuffle the list of options
-    options = allOptions.sublist(0, 4); // Select the first four options
-    options[correctAnswerIndex] = '$monkeyCount'; // Set correct option
+    allOptions.remove('$monkeyCount');
+
+    options = allOptions..shuffle();
+    options = options.sublist(0, 3);
+    options.insert(correctAnswerIndex, '$monkeyCount'); // Set correct option
   }
 
   @override
@@ -49,7 +54,10 @@ class _MonkeyCountingPageState extends State<MonkeyCountingPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text('Monkey Counting Game'),
+        title: Text(
+          'Monkey Counting Game',
+          style: TextStyle(fontFamily: 'openDyslexic'),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -57,7 +65,7 @@ class _MonkeyCountingPageState extends State<MonkeyCountingPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(30.0),
               child: Text(
                 'Select the correct number of monkeys',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -101,29 +109,39 @@ class _MonkeyCountingPageState extends State<MonkeyCountingPage> {
                     (entry) => ElevatedButton(
                       onPressed: () {
                         if (entry.key == correctAnswerIndex) {
+                          totalCorrectAnswers++;
                           // User selected correct option
                           showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
-                              title: Text('Correct Answer!'),
+                              title: Text('Correct Answer!',
+                                  style: TextStyle(
+                                      color: Colors.green,
+                                      fontFamily: 'OpenDyslexic')),
                               content: Image.asset(
                                 "images/Monkey2.gif",
-                                width: 100,
-                                height: 100,
+                                width: 150,
+                                height: 150,
                               ),
                             ),
                           );
                           playSound("audio/yay.mp3");
                         } else {
+                          totalWrongAnswers++;
                           // User selected wrong option
                           showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
-                              title: Text('Wrong Answer!'),
+                              title: Text(
+                                'Wrong Answer!',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontFamily: 'openDyslexic'),
+                              ),
                               content: Image.asset(
-                                "images/thumbsDown.png",
-                                width: 100,
-                                height: 100,
+                                "images/tomwrong.gif",
+                                width: 150,
+                                height: 150,
                               ),
                             ),
                           );
@@ -138,6 +156,7 @@ class _MonkeyCountingPageState extends State<MonkeyCountingPage> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+                totalQuestionsAttempted++;
                 setState(() {
                   generateMonkeyCount();
                 });
@@ -147,10 +166,84 @@ class _MonkeyCountingPageState extends State<MonkeyCountingPage> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text('Progress Report'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    color: totalCorrectAnswers / totalQuestionsAttempted >= 0.6
+                        ? Colors.green
+                        : Colors.red,
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      'Score: ${(totalCorrectAnswers / totalQuestionsAttempted * 100).toStringAsFixed(2)}%',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 200,
+                    child: charts.BarChart(
+                      _createSampleData(),
+                      animate: true,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text('Total Questions Attempted: $totalQuestionsAttempted'),
+                  Text('Total Correct Answers: $totalCorrectAnswers'),
+                  Text('Total Wrong Answers: $totalWrongAnswers'),
+                ],
+              ),
+            ),
+          );
+        },
+        child: Icon(Icons.bar_chart),
+      ),
     );
   }
 
   Future<void> playSound(String audiopath) async {
     await player.play(AssetSource(audiopath));
   }
+
+  List<charts.Series<ProgressData, String>> _createSampleData() {
+    final List<ProgressData> data = [
+      ProgressData('Correct', totalCorrectAnswers),
+      ProgressData('Wrong', totalWrongAnswers),
+    ];
+
+    return [
+      charts.Series<ProgressData, String>(
+        id: 'Progress',
+        domainFn: (ProgressData progress, _) => progress.status,
+        measureFn: (ProgressData progress, _) => progress.value,
+        data: data,
+        colorFn: (ProgressData progress, _) {
+          if (progress.status == 'Correct') {
+            return charts.MaterialPalette.green.shadeDefault;
+          } else {
+            return charts.MaterialPalette.red.shadeDefault;
+          }
+        },
+        labelAccessorFn: (ProgressData progress, _) =>
+            '${progress.status}: ${progress.value}',
+      )
+    ];
+  }
+}
+
+class ProgressData {
+  final String status;
+  final int value;
+
+  ProgressData(this.status, this.value);
 }

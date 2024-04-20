@@ -180,16 +180,13 @@ class _WordMatchingGameState extends State<TamilImageSelectionGame> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Correct Match!'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                "images/Monkey2.gif", // Replace with your correct image path
-                width: 100,
-                height: 100,
-              ),
-            ],
+          title: Text('Correct Answer!',
+              style:
+                  TextStyle(color: Colors.green, fontFamily: 'OpenDyslexic')),
+          content: Image.asset(
+            "images/Monkey2.gif",
+            width: 150,
+            height: 150,
           ),
         ),
       );
@@ -199,16 +196,14 @@ class _WordMatchingGameState extends State<TamilImageSelectionGame> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Wrong Match!'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                "images/thumbsDown.png", // Replace with your wrong image path
-                width: 100,
-                height: 100,
-              ),
-            ],
+          title: Text(
+            'Wrong Answer!',
+            style: TextStyle(color: Colors.red, fontFamily: 'openDyslexic'),
+          ),
+          content: Image.asset(
+            "images/tomwrong.gif",
+            width: 150,
+            height: 150,
           ),
         ),
       );
