@@ -1,7 +1,9 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:flutter_tts/flutter_tts.dart';
 
 class RhymeTimeGame extends StatefulWidget {
   @override
@@ -10,6 +12,7 @@ class RhymeTimeGame extends StatefulWidget {
 
 class _RhymeTimeGameState extends State<RhymeTimeGame> {
   final AudioPlayer player = AudioPlayer();
+  final FlutterTts flutterTts = FlutterTts();
   List<String> words = [
     'king', 'ring', 'table', 'cable', 'blossom', 'awesome', 'broom', 'groom',
     'car',
@@ -151,13 +154,13 @@ class _RhymeTimeGameState extends State<RhymeTimeGame> {
     'beach': 'peach',
     'road': 'load',
     'king': 'wing',
-    'chair': 'mare',
-    'ball': 'mall',
-    'light': 'fight',
-    'board': 'chord',
-    'chalk': 'talk',
-    'floor': 'door',
-    'hand': 'stand',
+    'mare': 'chair',
+    'mall': 'ball',
+    'fight': 'light',
+    'chord': 'board',
+    'talk': 'chalk',
+    'door': 'floor',
+    'stand': 'hand',
     'jar': 'car',
     'spar': 'star',
     'soon': 'moon',
@@ -206,13 +209,14 @@ class _RhymeTimeGameState extends State<RhymeTimeGame> {
     'peach': 'beach',
     'load': 'road',
     'wing': 'king',
-    'mare': 'chair',
-    'mall': 'ball',
-    'fight': 'light',
-    'chord': 'board',
-    'talk': 'chalk',
-    'door': 'floor',
-    'stand': 'hand'
+    'chair': 'mare',
+    'ball': 'mall',
+    'light': 'fight',
+    'board': 'chord',
+    'chalk': 'talk',
+    'floor': 'door',
+    'hand': 'stand'
+
     // Add more pairs here...
   };
   String selectedWord = '';
@@ -222,6 +226,7 @@ class _RhymeTimeGameState extends State<RhymeTimeGame> {
   int totalQuestionsAttempted = 0;
   int totalCorrectAnswers = 0;
   int totalWrongAnswers = 0;
+  bool isVolumeEnabled = true;
 
   @override
   void initState() {
@@ -231,6 +236,11 @@ class _RhymeTimeGameState extends State<RhymeTimeGame> {
 
   Future<void> playSound(String audiopath) async {
     await player.play(AssetSource(audiopath));
+  }
+
+  Future<void> _speak(String word) async {
+    await flutterTts.setSpeechRate(0.2);
+    await flutterTts.speak(word);
   }
 
   void _setNextQuestion() {
@@ -268,9 +278,13 @@ class _RhymeTimeGameState extends State<RhymeTimeGame> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Correct Answer!',
-              style:
-                  TextStyle(color: Colors.green, fontFamily: 'OpenDyslexic')),
+          title: Text(
+            'Correct Answer!',
+            style: TextStyle(
+              color: Colors.green,
+              fontFamily: 'OpenDyslexic',
+            ),
+          ),
           content: Image.asset(
             "images/Monkey2.gif",
             width: 150,
@@ -286,7 +300,10 @@ class _RhymeTimeGameState extends State<RhymeTimeGame> {
         builder: (_) => AlertDialog(
           title: Text(
             'Wrong Answer!',
-            style: TextStyle(color: Colors.red, fontFamily: 'openDyslexic'),
+            style: TextStyle(
+              color: Colors.red,
+              fontFamily: 'openDyslexic',
+            ),
           ),
           content: Image.asset(
             "images/tomwrong.gif",
@@ -302,58 +319,139 @@ class _RhymeTimeGameState extends State<RhymeTimeGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Rhyme Time'),
-        backgroundColor: Colors.blue,
+        title: Text(
+          'Rhyme Time',
+          style: TextStyle(fontFamily: 'openDyslexic'),
+        ),
+        backgroundColor: Colors.transparent,
       ),
+      extendBodyBehindAppBar: true,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: [
-            Text(
-              selectedWord.toUpperCase(),
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'openDyslexic'),
-            ),
-            SizedBox(height: 20),
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              children: List.generate(rhymeOptions.length, (index) {
-                String word = rhymeOptions[index];
-                return GestureDetector(
-                  onTap: () {
-                    if (!isCorrect) {
-                      checkMatch(word);
-                    }
-                  },
-                  child: Container(
-                    margin: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: Center(
-                      child: Text(
-                        word.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'openDyslexic',
-                          color: Colors.white,
-                        ),
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/background.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 70),
+                    Text(
+                      'Select the correct word that rhymes with the below word',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontFamily: 'openDyslexic',
+                        color: Colors.black,
                       ),
                     ),
-                  ),
-                );
-              }),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _setNextQuestion();
-              },
-              child: Text('Next'),
+                    SizedBox(height: 40),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            selectedWord.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'openDyslexic',
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        IconButton(
+                          icon: Icon(
+                            Icons.volume_up,
+                            color: isVolumeEnabled ? Colors.black : Colors.grey,
+                          ),
+                          onPressed: () {
+                            if (isVolumeEnabled) _speak(selectedWord);
+                          },
+                        ),
+                      ],
+                    ),
+                    GridView.count(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      children: List.generate(rhymeOptions.length, (index) {
+                        String word = rhymeOptions[index];
+                        return GestureDetector(
+                          onTap: () {
+                            if (!isCorrect) {
+                              if (isVolumeEnabled) _speak(word);
+                              checkMatch(word);
+                            }
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Material(
+                                  type: MaterialType.transparency,
+                                  child: InkWell(
+                                    onTap: () {
+                                      if (!isCorrect) {
+                                        checkMatch(word);
+                                      }
+                                    },
+                                    child: SizedBox(
+                                      width: 150,
+                                      height: 80,
+                                      child: Center(
+                                        child: Text(
+                                          word.toUpperCase(),
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: 'openDyslexic',
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.volume_up,
+                                  color: isVolumeEnabled
+                                      ? Colors.black
+                                      : Colors.grey,
+                                ),
+                                onPressed: () {
+                                  if (isVolumeEnabled) _speak(word);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        _setNextQuestion();
+                      },
+                      child: Text('Next'),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

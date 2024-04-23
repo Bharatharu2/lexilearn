@@ -23,7 +23,6 @@ class _WordMatchingGameState extends State<WordMatchingGame> {
     'jacket',
     'kettle',
     'lamp',
-    'mug',
     'notebook',
     'orange',
     'pillow',
@@ -58,8 +57,6 @@ class _WordMatchingGameState extends State<WordMatchingGame> {
     'usb',
     'vehicle',
     'watch',
-    'xylophone',
-    'yacht',
     'zebra crossing',
     'alarm clock',
     'broom',
@@ -83,8 +80,6 @@ class _WordMatchingGameState extends State<WordMatchingGame> {
     'umbrella stand',
     'violin',
     'window',
-    'yak',
-    'zucchini'
     // Add more words here...
   ];
   List<String> shuffledWords = [];
@@ -101,7 +96,6 @@ class _WordMatchingGameState extends State<WordMatchingGame> {
     'jacket.png',
     'kettle.png',
     'lamp.png',
-    'mug.png',
     'notebook.png',
     'orange.png',
     'pillow.png',
@@ -136,8 +130,6 @@ class _WordMatchingGameState extends State<WordMatchingGame> {
     'usb.png',
     'vehicle.png',
     'watch.png',
-    'xylophone.png',
-    'yacht.png',
     'zebra crossing.png',
     'alarm clock.png',
     'broom.png',
@@ -161,8 +153,6 @@ class _WordMatchingGameState extends State<WordMatchingGame> {
     'umbrella stand.png',
     'violin.png',
     'window.png',
-    'yak.png',
-    'zucchini.png'
 
     // Add corresponding image paths here...
   ];
@@ -253,76 +243,94 @@ class _WordMatchingGameState extends State<WordMatchingGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Word Matching Game'),
-        backgroundColor: Colors.blue,
+        title:
+            Text('Word Quest!', style: TextStyle(fontFamily: 'OpenDyslexic')),
+        backgroundColor: Colors.transparent,
       ),
+      extendBodyBehindAppBar: true,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: [
-            Text(
-              'Choose the correct word!',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-                fontFamily: 'OpenDyslexic', // Apply OpenDyslexic font
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/background.jpg'),
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            GestureDetector(
-              onTap: () {
-                checkMatch(selectedWord);
-              },
-              child: Image.asset(
-                "images2/$selectedImage",
-                width: 200,
-                height: 200,
-              ),
-            ),
-            SizedBox(height: 20),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: answerOptions.map((word) {
-                return GestureDetector(
-                  onTap: () {
-                    if (!isCorrect) {
-                      checkMatch(word);
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: isCorrect && word == selectedWord
-                          ? Colors.green
-                          : Colors.blue,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      word.toUpperCase(),
+              child: Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Choose the correct word!',
                       style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                         fontFamily: 'OpenDyslexic', // Apply OpenDyslexic font
                       ),
                     ),
-                  ),
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _setNextQuestion();
-              },
-              child: Text(
-                'Next',
-                style: TextStyle(color: Colors.white),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                textStyle: TextStyle(fontSize: 20),
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        checkMatch(selectedWord);
+                      },
+                      child: Image.asset(
+                        "images2/$selectedImage",
+                        width: 200,
+                        height: 200,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: answerOptions.map((word) {
+                        return GestureDetector(
+                          onTap: () {
+                            if (!isCorrect) {
+                              checkMatch(word);
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: isCorrect && word == selectedWord
+                                  ? Colors.green
+                                  : Colors.blue,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              word.toUpperCase(),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontFamily:
+                                    'OpenDyslexic', // Apply OpenDyslexic font
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        _setNextQuestion();
+                      },
+                      child: Text(
+                        'Next',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        textStyle: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

@@ -105,48 +105,65 @@ class _TypicallyExerciseState extends State<TypicallyExercise> {
       appBar: AppBar(
         title: Text(
           'Number Conversion Challenge',
-          style: TextStyle(fontFamily: 'openDyslexic', fontSize: 18),
+          style: TextStyle(
+              fontFamily: 'openDyslexic',
+              fontSize: 18,
+              fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.transparent,
       ),
+      extendBodyBehindAppBar: true,
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '$_generatedSequenceText',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'openDyslexic',
-                    color: Colors.blue),
-              ),
-              SizedBox(height: 20),
-              TextField(
-                controller: _controller,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  hintText: 'Enter the sequence',
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/background.jpg'),
+                  fit: BoxFit.cover,
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    _userInput = value;
-                  });
-                },
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _userInput.isEmpty ? null : _checkAnswer,
-                child: Text('Submit'),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '$_generatedSequenceText',
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontFamily: 'openDyslexic',
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    SizedBox(height: 20),
+                    TextField(
+                      controller: _controller,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        hintText: 'Enter the sequence',
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          _userInput = value;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _userInput.isEmpty ? null : _checkAnswer,
+                      child: Text('Submit'),
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: _generateSequence,
+                      child: Text('Refresh'),
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: _generateSequence,
-                child: Text('Refresh'),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(

@@ -64,8 +64,12 @@ class _NumberExerciseState extends State<NumberExercise> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Alert'),
-          content: Text('Please listen to the number first.'),
+          title: Text(
+            'Alert',
+            style: TextStyle(fontFamily: 'openDyslexic', color: Colors.red),
+          ),
+          content: Text('Please listen to the number first.',
+              style: TextStyle(fontFamily: 'openDyslexic', fontSize: 16)),
           actions: [
             ElevatedButton(
               onPressed: () {
@@ -134,78 +138,95 @@ class _NumberExerciseState extends State<NumberExercise> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Number Exercise',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.blue,
+        title: Text('Number Exercise',
+            style: TextStyle(
+                color: Colors.black, fontFamily: 'openDyslexic', fontSize: 25)),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
+      extendBodyBehindAppBar: true,
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      speakRandomNumber();
-                      setState(() {
-                        isListenButtonPressed = true;
-                      });
-                    },
-                    child: Text('Listen'),
-                  ),
-                  SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: currentNumber.isNotEmpty
-                        ? () => playSound(numberAudios[currentNumber] ?? '')
-                        : null,
-                    child: Text('Listen Again'),
-                  ),
-                ],
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("images/background.jpg"),
+                  fit: BoxFit.cover,
+                ),
               ),
-              SizedBox(height: 20),
-              Text(
-                'Select the correct number:',
-                style: TextStyle(fontSize: 17, fontFamily: 'openDyslexic'),
-              ),
-              SizedBox(height: 20),
-              Wrap(
-                spacing: 20,
-                runSpacing: 20,
-                children: numbers.map((number) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (!isCorrectAnswer) {
-                        checkAnswer(number);
-                      }
-                    },
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: selectedNumber == number
-                            ? (isCorrectAnswer ? Colors.green : Colors.red)
-                            : Colors.blue,
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        number,
-                        style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.white,
-                            fontFamily: 'openDyslexic'),
-                      ),
+              child: Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            speakRandomNumber();
+                            setState(() {
+                              isListenButtonPressed = true;
+                            });
+                          },
+                          child: Text('Listen'),
+                        ),
+                        SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: currentNumber.isNotEmpty
+                              ? () =>
+                                  playSound(numberAudios[currentNumber] ?? '')
+                              : null,
+                          child: Text('Listen Again'),
+                        ),
+                      ],
                     ),
-                  );
-                }).toList(),
+                    SizedBox(height: 25),
+                    Text(
+                      'Listen and Select the correct number:',
+                      style:
+                          TextStyle(fontSize: 17, fontFamily: 'openDyslexic'),
+                    ),
+                    SizedBox(height: 20),
+                    Wrap(
+                      spacing: 20,
+                      runSpacing: 20,
+                      children: numbers.map((number) {
+                        return GestureDetector(
+                          onTap: () {
+                            if (!isCorrectAnswer) {
+                              checkAnswer(number);
+                            }
+                          },
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: selectedNumber == number
+                                  ? (isCorrectAnswer
+                                      ? Colors.green
+                                      : Colors.red)
+                                  : Colors.blue,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              number,
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Colors.white,
+                                  fontFamily: 'openDyslexic'),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(

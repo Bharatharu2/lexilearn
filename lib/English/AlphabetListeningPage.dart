@@ -56,8 +56,10 @@ class _AlphabetListeningPageState extends State<AlphabetListeningPage> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Alert'),
-          content: Text('Please listen to the alphabet first.'),
+          title: Text('Alert',
+              style: TextStyle(color: Colors.red, fontFamily: 'OpenDyslexic')),
+          content: Text('Please listen to the alphabet first.',
+              style: TextStyle(fontFamily: 'OpenDyslexic')),
           actions: [
             ElevatedButton(
               onPressed: () {
@@ -132,79 +134,98 @@ class _AlphabetListeningPageState extends State<AlphabetListeningPage> {
       appBar: AppBar(
         title: Text(
           'Alphabet Listening',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black, fontFamily: 'OpenDyslexic'),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.transparent,
+        elevation: 0, // Remove the shadow below the app bar
       ),
+      extendBodyBehindAppBar:
+          true, // Extend the background image behind the app bar
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      speakRandomAlphabet();
-                      setState(() {
-                        isListenButtonPressed = true;
-                      });
-                    },
-                    child: Text('Listen'),
-                  ),
-                  SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: isListenButtonPressed
-                        ? () => speakSoundAlphabet(currentAlphabet)
-                        : null,
-                    child: Text('Listen Again'),
-                  ),
-                ],
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/background.jpg'),
+                  fit: BoxFit.cover,
+                ),
               ),
-              SizedBox(height: 20),
-              Text(
-                'Select the correct alphabet:',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'OpenDyslexic'), // Apply OpenDyslexic font
-              ),
-              SizedBox(height: 20),
-              Wrap(
-                spacing: 20,
-                runSpacing: 20,
-                children: alphabets.map((alphabet) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (!isCorrectAnswer) {
-                        checkAnswer(alphabet);
-                      }
-                    },
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: selectedAlphabet == alphabet
-                            ? (isCorrectAnswer ? Colors.green : Colors.red)
-                            : Colors.blue,
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        alphabet.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                          fontFamily: 'OpenDyslexic', // Apply OpenDyslexic font
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            speakRandomAlphabet();
+                            setState(() {
+                              isListenButtonPressed = true;
+                            });
+                          },
+                          child: Text('Listen'),
                         ),
-                      ),
+                        SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: isListenButtonPressed
+                              ? () => speakSoundAlphabet(currentAlphabet)
+                              : null,
+                          child: Text('Listen Again'),
+                        ),
+                      ],
                     ),
-                  );
-                }).toList(),
+                    SizedBox(height: 20),
+                    Text(
+                      'Select the correct alphabet:',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontFamily:
+                              'OpenDyslexic'), // Apply OpenDyslexic font
+                    ),
+                    SizedBox(height: 20),
+                    Wrap(
+                      spacing: 20,
+                      runSpacing: 20,
+                      children: alphabets.map((alphabet) {
+                        return GestureDetector(
+                          onTap: () {
+                            if (!isCorrectAnswer) {
+                              checkAnswer(alphabet);
+                            }
+                          },
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: selectedAlphabet == alphabet
+                                  ? (isCorrectAnswer
+                                      ? Colors.green
+                                      : Colors.red)
+                                  : Colors.blue,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              alphabet.toUpperCase(),
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontFamily:
+                                    'OpenDyslexic', // Apply OpenDyslexic font
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(

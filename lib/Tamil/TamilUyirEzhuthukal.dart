@@ -81,8 +81,9 @@ class _TamilAlphabetListeningPageState
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Alert'),
-          content: Text('Please listen to the number first.'),
+          title: Text('எச்சரிக்கை', style: TextStyle(color: Colors.red)),
+          content:
+              Text('முதலில் எழுத்தை கேளுங்கள்', style: TextStyle(fontSize: 16)),
           actions: [
             ElevatedButton(
               onPressed: () {
@@ -155,74 +156,92 @@ class _TamilAlphabetListeningPageState
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Tamil Alphabet Listening',
-          style: TextStyle(color: Colors.white),
+          'உயிரெழுத்து பயிற்சி',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
+      extendBodyBehindAppBar: true,
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      speakRandomAlphabet();
-                      setState(() {
-                        isListenButtonPressed = true;
-                      });
-                    },
-                    child: Text('Listen'),
-                  ),
-                  SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: currentAlphabet.isNotEmpty
-                        ? () => playSound(alphabetAudios[currentAlphabet] ?? '')
-                        : null,
-                    child: Text('Listen Again'),
-                  ),
-                ],
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/background.jpg'),
+                  fit: BoxFit.cover,
+                ),
               ),
-              SizedBox(height: 20),
-              Text(
-                'சரியான எழுத்தை தேர்வு செய்யவும்:',
-                style: TextStyle(fontSize: 17),
-              ),
-              SizedBox(height: 20),
-              Wrap(
-                spacing: 20,
-                runSpacing: 20,
-                children: alphabets.map((alphabet) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (!isCorrectAnswer) {
-                        checkAnswer(alphabet);
-                      }
-                    },
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: selectedAlphabet == alphabet
-                            ? (isCorrectAnswer ? Colors.green : Colors.red)
-                            : Colors.blue,
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        alphabet,
-                        style: TextStyle(fontSize: 24, color: Colors.white),
-                      ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            speakRandomAlphabet();
+                            setState(() {
+                              isListenButtonPressed = true;
+                            });
+                          },
+                          child: Text('கேள்'),
+                        ),
+                        SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: currentAlphabet.isNotEmpty
+                              ? () => playSound(
+                                  alphabetAudios[currentAlphabet] ?? '')
+                              : null,
+                          child: Text('மீண்டும் கேள்'),
+                        ),
+                      ],
                     ),
-                  );
-                }).toList(),
+                    SizedBox(height: 20),
+                    Text(
+                      'சரியான எழுத்தை தேர்வு செய்யவும்:',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    SizedBox(height: 20),
+                    Wrap(
+                      spacing: 20,
+                      runSpacing: 20,
+                      children: alphabets.map((alphabet) {
+                        return GestureDetector(
+                          onTap: () {
+                            if (!isCorrectAnswer) {
+                              checkAnswer(alphabet);
+                            }
+                          },
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: selectedAlphabet == alphabet
+                                  ? (isCorrectAnswer
+                                      ? Colors.green
+                                      : Colors.red)
+                                  : Colors.blue,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              alphabet,
+                              style:
+                                  TextStyle(fontSize: 24, color: Colors.white),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(

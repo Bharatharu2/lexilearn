@@ -52,119 +52,137 @@ class _MonkeyCountingPageState extends State<MonkeyCountingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Text(
           'Monkey Counting Game',
           style: TextStyle(fontFamily: 'openDyslexic'),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Text(
-                'Select the correct number of monkeys',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/background.jpg'),
+                fit: BoxFit.cover,
               ),
             ),
-            SizedBox(height: 10),
-            // Display monkey image multiple times based on monkey count
-            GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: monkeyCount,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.blue, width: 2),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Image.asset(
-                      'images/monkey.png', // Replace with actual image path
-                      fit: BoxFit.cover,
-                    ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 50), // Adjusted padding here
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 30.0), // Adjusted padding here
+                  child: Text(
+                    'Select the correct number of monkeys',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'openDyslexic',
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center, // Center the text
                   ),
-                );
-              },
+                ),
+                SizedBox(height: 10),
+                // Display monkey image multiple times based on monkey count
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: monkeyCount,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(30),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blue, width: 2),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Image.asset(
+                          'images/monkey.png', // Replace with actual image path
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 20),
+                // Display options for user to select
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: options
+                      .asMap()
+                      .entries
+                      .map(
+                        (entry) => ElevatedButton(
+                          onPressed: () {
+                            if (entry.key == correctAnswerIndex) {
+                              totalCorrectAnswers++;
+                              // User selected correct option
+                              showDialog(
+                                context: context,
+                                builder: (_) => AlertDialog(
+                                  title: Text('Correct Answer!',
+                                      style: TextStyle(
+                                          color: Colors.green,
+                                          fontFamily: 'OpenDyslexic')),
+                                  content: Image.asset(
+                                    "images/Monkey2.gif",
+                                    width: 150,
+                                    height: 150,
+                                  ),
+                                ),
+                              );
+                              playSound("audio/yay.mp3");
+                            } else {
+                              totalWrongAnswers++;
+                              // User selected wrong option
+                              showDialog(
+                                context: context,
+                                builder: (_) => AlertDialog(
+                                  title: Text(
+                                    'Wrong Answer!',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontFamily: 'openDyslexic'),
+                                  ),
+                                  content: Image.asset(
+                                    "images/tomwrong.gif",
+                                    width: 150,
+                                    height: 150,
+                                  ),
+                                ),
+                              );
+                              playSound("audio/wrong.mp3");
+                            }
+                          },
+                          child: Text(entry.value),
+                        ),
+                      )
+                      .toList(),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    totalQuestionsAttempted++;
+                    setState(() {
+                      generateMonkeyCount();
+                    });
+                  },
+                  child: Text('Refresh'),
+                ),
+              ],
             ),
-            SizedBox(height: 20),
-            // Display options for user to select
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: options
-                  .asMap()
-                  .entries
-                  .map(
-                    (entry) => ElevatedButton(
-                      onPressed: () {
-                        if (entry.key == correctAnswerIndex) {
-                          totalCorrectAnswers++;
-                          // User selected correct option
-                          showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                              title: Text('Correct Answer!',
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontFamily: 'OpenDyslexic')),
-                              content: Image.asset(
-                                "images/Monkey2.gif",
-                                width: 150,
-                                height: 150,
-                              ),
-                            ),
-                          );
-                          playSound("audio/yay.mp3");
-                        } else {
-                          totalWrongAnswers++;
-                          // User selected wrong option
-                          showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                              title: Text(
-                                'Wrong Answer!',
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontFamily: 'openDyslexic'),
-                              ),
-                              content: Image.asset(
-                                "images/tomwrong.gif",
-                                width: 150,
-                                height: 150,
-                              ),
-                            ),
-                          );
-                          playSound("audio/wrong.mp3");
-                        }
-                      },
-                      child: Text(entry.value),
-                    ),
-                  )
-                  .toList(),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                totalQuestionsAttempted++;
-                setState(() {
-                  generateMonkeyCount();
-                });
-              },
-              child: Text('Refresh'),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

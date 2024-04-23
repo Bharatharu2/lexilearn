@@ -243,59 +243,78 @@ class _WordMatchingGameState extends State<WordMatchingGame2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Word Matching Game'),
-        backgroundColor: Colors.blue,
+        title: Text(
+          "Image Quest",
+          style: TextStyle(fontFamily: 'openDyslexic'),
+        ),
+        backgroundColor: Colors.transparent,
       ),
+      extendBodyBehindAppBar: true,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: [
-            Text(
-              'Choose the correct Image',
-              style: TextStyle(
-                  fontSize: 24,
-                  fontFamily: 'openDyslexic',
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            Text(
-              selectedWord.toUpperCase(),
-              style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.blue,
-                  fontFamily: 'openDyslexic',
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              children: List.generate(displayedImages.length, (index) {
-                String image = displayedImages[index];
-                return GestureDetector(
-                  onTap: () {
-                    if (!isCorrect) {
-                      checkMatch(image);
-                    }
-                  },
-                  child: Container(
-                    margin: EdgeInsets.all(8),
-                    child: Image.asset(
-                      "images2/$image",
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/background.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 40),
+                    Text(
+                      'Choose the correct Image:',
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontFamily: 'openDyslexic',
+                          fontWeight: FontWeight.bold),
                     ),
-                  ),
-                );
-              }),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _setNextQuestion();
-              },
-              child: Text('Refresh'),
+                    SizedBox(height: 40),
+                    Text(
+                      selectedWord.toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.black,
+                          fontFamily: 'openDyslexic',
+                          fontWeight: FontWeight.bold),
+                    ),
+                    GridView.count(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      children: List.generate(displayedImages.length, (index) {
+                        String image = displayedImages[index];
+                        return GestureDetector(
+                          onTap: () {
+                            if (!isCorrect) {
+                              checkMatch(image);
+                            }
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(10),
+                            child: Image.asset(
+                              "images2/$image",
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                    SizedBox(height: 40),
+                    ElevatedButton(
+                      onPressed: () {
+                        _setNextQuestion();
+                      },
+                      child: Text('Refresh'),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

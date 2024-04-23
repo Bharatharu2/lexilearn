@@ -266,7 +266,46 @@ class _ExercisePageState extends State<ExercisePage> {
         'Female',
         'Riddle'
       ],
-      'F': [],
+      'F': [
+        'Roof',
+        'Fit',
+        'Fix',
+        'Fan',
+        'Fed',
+        'Fig',
+        'Fin',
+        'For',
+        'Fly',
+        'Fox',
+        'Fun',
+        'Fur',
+        'Fee',
+        'Foe',
+        'Fad',
+        'Fog',
+        'Fax',
+        'Few',
+        'Fay',
+        'Fob',
+        'Far',
+        'Beef',
+        'Cuff',
+        'Leaf',
+        'Beef',
+        'Chef',
+        'Calf',
+        'Loaf',
+        'Golf',
+        'Self',
+        'Wolf',
+        'Brief',
+        'Shelf',
+        'Chief',
+        'Dwarf',
+        'Proof',
+        'Stuff',
+        'Brief',
+      ],
       'G': [
         'Gap',
         'Gas',
@@ -487,8 +526,56 @@ class _ExercisePageState extends State<ExercisePage> {
         'Grasp',
         'Creep'
       ],
-      'Q': [],
-      'R': [],
+      'Q': [
+        'equal',
+        'quote',
+        'squat',
+        'query',
+        'equip',
+        'quack',
+        'quick',
+        'quiet',
+        'quake',
+        'aquas',
+        'squire',
+        'quote',
+        'opaque',
+        'acquit',
+        'aquatic',
+        'equity',
+        'marque',
+        'squint',
+        'mosque',
+        'inquire'
+      ],
+      'R': [
+        'ear',
+        'ore',
+        'era',
+        'err',
+        'are',
+        'her',
+        'fir',
+        'tar',
+        'for',
+        'bar',
+        'fire',
+        'tire',
+        'bore',
+        'rare',
+        'near',
+        'fort',
+        'core',
+        'mire',
+        'bard',
+        'fern',
+        'prior',
+        'lunar',
+        'order',
+        'arbor',
+        'drain',
+        'lured'
+      ],
       'S': [
         'Sac',
         'Sad',
@@ -752,8 +839,11 @@ class _ExercisePageState extends State<ExercisePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Text('Exercise'),
+        backgroundColor: Colors.transparent,
+        title: Text(
+          'Exercise',
+          style: TextStyle(fontFamily: 'openDyslexic'),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -767,6 +857,7 @@ class _ExercisePageState extends State<ExercisePage> {
           ),
         ],
       ),
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           Container(
@@ -782,6 +873,7 @@ class _ExercisePageState extends State<ExercisePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  SizedBox(height: 5),
                   Text(
                     "Choose the letter you learned",
                     style: TextStyle(
@@ -790,7 +882,6 @@ class _ExercisePageState extends State<ExercisePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20),
                   for (int i = 0; i < words.length; i++)
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,

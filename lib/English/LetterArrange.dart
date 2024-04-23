@@ -180,172 +180,192 @@ class _Feature1PageState extends State<Feature1Page> {
       appBar: AppBar(
         title: Text(
           'LexiPuzzle',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black, fontFamily: 'openDyslexic'),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.transparent,
       ),
+      extendBodyBehindAppBar: true,
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(height: 80),
-              Text(
-                'Listen to the word:',
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: speakCurrentWord,
-                    child: Text('Speak', style: TextStyle(color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(50), // Make it fully round
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: getRandomWord,
-                    child:
-                        Text('Refresh', style: TextStyle(color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(50), // Make it fully round
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                          content: Image.asset(
-                            "images/${currentWord.toLowerCase()}.png",
-                            width: 200,
-                            height: 200,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Text('Hint', style: TextStyle(color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(50), // Make it fully round
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 30),
-              Text(
-                'Arrange the letters:',
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(height: 10),
-              Wrap(
-                spacing: 10,
-                children: List.generate(jumbledWord.length, (index) {
-                  String char = jumbledWord[index];
-                  return Draggable<String>(
-                    data: char,
-                    feedback: Material(
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius:
-                              BorderRadius.circular(10), // Square shape
-                        ),
-                        child: Text(
-                          char,
-                          style: TextStyle(
-                            fontSize: 50,
-                            color: Colors.white,
-                            fontFamily:
-                                'OpenDyslexic', // Apply OpenDyslexic font
-                          ),
-                          textAlign: TextAlign.center, // Center the text
-                        ),
-                      ),
-                    ),
-                    childWhenDragging: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(10), // Square shape
-                      ),
-                      child: Text(
-                        '',
-                        style: TextStyle(
-                            fontSize: 30), // Set a consistent font size
-                      ),
-                    ),
-                    child: DragTarget<String>(
-                      builder: (context, candidateData, rejectedData) {
-                        return Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius:
-                                BorderRadius.circular(10), // Square shape
-                          ),
-                          child: Text(
-                            char,
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                              fontFamily:
-                                  'OpenDyslexic', // Apply OpenDyslexic font
-                            ),
-                            textAlign: TextAlign.center, // Center the text
-                          ),
-                        );
-                      },
-                      onWillAccept: (data) => true,
-                      onAccept: (data) {
-                        int draggedIndex = jumbledWord.indexOf(data);
-                        int targetIndex = jumbledWord.indexOf(char);
-                        List<String> temp = List.from(jumbledWord);
-                        temp[draggedIndex] = jumbledWord[targetIndex];
-                        temp[targetIndex] = jumbledWord[draggedIndex];
-                        setState(() {
-                          jumbledWord = temp;
-                          userAnswer = jumbledWord.join();
-                        });
-                      },
-                    ),
-                  );
-                }),
-              ),
-              SizedBox(height: 35),
-              ElevatedButton(
-                onPressed: isSubmitted
-                    ? null
-                    : checkAnswer, // Disable if already submitted
-                child: Text('Submit', style: TextStyle(color: Colors.white)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(50), // Make it fully round
-                  ),
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/background.jpg'),
+                  fit: BoxFit.cover,
                 ),
               ),
-            ],
-          ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 180),
+                    Text(
+                      'Listen to the word and arrange the letters:',
+                      style:
+                          TextStyle(fontSize: 20, fontFamily: 'openDyslexic'),
+                    ),
+                    SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: speakCurrentWord,
+                          child: Text('Speak',
+                              style: TextStyle(color: Colors.white)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  50), // Make it fully round
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: getRandomWord,
+                          child: Text('Refresh',
+                              style: TextStyle(color: Colors.white)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  50), // Make it fully round
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                content: Image.asset(
+                                  "images/${currentWord.toLowerCase()}.png",
+                                  width: 200,
+                                  height: 200,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text('Hint',
+                              style: TextStyle(color: Colors.white)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  50), // Make it fully round
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      'Arrange the letters:',
+                      style:
+                          TextStyle(fontSize: 20, fontFamily: 'openDyslexic'),
+                    ),
+                    SizedBox(height: 20),
+                    Wrap(
+                      spacing: 10,
+                      children: List.generate(jumbledWord.length, (index) {
+                        String char = jumbledWord[index];
+                        return Draggable<String>(
+                          data: char,
+                          feedback: Material(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius:
+                                    BorderRadius.circular(10), // Square shape
+                              ),
+                              child: Text(
+                                char,
+                                style: TextStyle(
+                                  fontSize: 50,
+                                  color: Colors.white,
+                                  fontFamily:
+                                      'OpenDyslexic', // Apply OpenDyslexic font
+                                ),
+                                textAlign: TextAlign.center, // Center the text
+                              ),
+                            ),
+                          ),
+                          childWhenDragging: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius:
+                                  BorderRadius.circular(30), // Square shape
+                            ),
+                            child: Text(
+                              '',
+                              style: TextStyle(
+                                  fontSize: 30), // Set a consistent font size
+                            ),
+                          ),
+                          child: DragTarget<String>(
+                            builder: (context, candidateData, rejectedData) {
+                              return Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius:
+                                      BorderRadius.circular(30), // Square shape
+                                ),
+                                child: Text(
+                                  char,
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    color: Colors.white,
+                                    fontFamily:
+                                        'OpenDyslexic', // Apply OpenDyslexic font
+                                  ),
+                                  textAlign:
+                                      TextAlign.center, // Center the text
+                                ),
+                              );
+                            },
+                            onWillAccept: (data) => true,
+                            onAccept: (data) {
+                              int draggedIndex = jumbledWord.indexOf(data);
+                              int targetIndex = jumbledWord.indexOf(char);
+                              List<String> temp = List.from(jumbledWord);
+                              temp[draggedIndex] = jumbledWord[targetIndex];
+                              temp[targetIndex] = jumbledWord[draggedIndex];
+                              setState(() {
+                                jumbledWord = temp;
+                                userAnswer = jumbledWord.join();
+                              });
+                            },
+                          ),
+                        );
+                      }),
+                    ),
+                    SizedBox(height: 35),
+                    ElevatedButton(
+                      onPressed: isSubmitted
+                          ? null
+                          : checkAnswer, // Disable if already submitted
+                      child:
+                          Text('Submit', style: TextStyle(color: Colors.white)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(50), // Make it fully round
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(

@@ -219,76 +219,97 @@ class _WordMatchingGameState extends State<TamilWordMatchingGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Word Matching Game'),
-        backgroundColor: Colors.blue,
+        title: Text(
+          'தமிழ் வார்த்தை பயிற்சி',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
+      extendBodyBehindAppBar: true,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: [
-            Text(
-              'சரியான வார்த்தையை தேர்வு செய்யவும்',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-                fontFamily: 'OpenDyslexic', // Apply OpenDyslexic font
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/background.jpg'),
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            GestureDetector(
-              onTap: () {
-                checkMatch(selectedWord);
-              },
-              child: Image.asset(
-                "images2/$selectedImage",
-                width: 200,
-                height: 200,
-              ),
-            ),
-            SizedBox(height: 20),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: answerOptions.map((word) {
-                return GestureDetector(
-                  onTap: () {
-                    if (!isCorrect) {
-                      checkMatch(word);
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: isCorrect && word == selectedWord
-                          ? Colors.green
-                          : Colors.blue,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      word.toUpperCase(),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'சரியான வார்த்தையை தேர்வு செய்யவும்',
                       style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                         fontFamily: 'OpenDyslexic', // Apply OpenDyslexic font
                       ),
                     ),
-                  ),
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _setNextQuestion();
-              },
-              child: Text(
-                'Next',
-                style: TextStyle(color: Colors.white),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                textStyle: TextStyle(fontSize: 20),
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        checkMatch(selectedWord);
+                      },
+                      child: Image.asset(
+                        "images2/$selectedImage",
+                        width: 200,
+                        height: 200,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: answerOptions.map((word) {
+                        return GestureDetector(
+                          onTap: () {
+                            if (!isCorrect) {
+                              checkMatch(word);
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: isCorrect && word == selectedWord
+                                  ? Colors.green
+                                  : Colors.blue,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              word.toUpperCase(),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontFamily:
+                                    'OpenDyslexic', // Apply OpenDyslexic font
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        _setNextQuestion();
+                      },
+                      child: Text(
+                        'அடுத்து',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        textStyle: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

@@ -6,6 +6,9 @@ import 'package:lexilearn/English/AlphabetListeningPage.dart';
 import 'package:lexilearn/English/WordMatchingGame.dart';
 import 'package:lexilearn/English/WordMatchingGame2.dart';
 import 'package:lexilearn/English/RhymeTimeGame.dart';
+import 'package:lexilearn/Numbers/Division.dart';
+import 'package:lexilearn/Numbers/Multiplication.dart';
+import 'package:lexilearn/Numbers/Subtraction.dart';
 import 'package:lexilearn/Tamil/TamilUyirEzhuthukal.dart';
 import 'package:lexilearn/Tamil/TamilUyirEzhuthuKarpom.dart';
 import 'package:lexilearn/Tamil/TamilMaeiAezhithuKarpom.dart';
@@ -19,6 +22,8 @@ import 'package:lexilearn/Tamil/TamilImageSelectionGame.dart';
 import 'package:lexilearn/Numbers/NumberTracing.dart';
 import 'package:lexilearn/Tamil/TamilLetterArrange.dart';
 import 'package:lexilearn/Numbers/NumberPractice.dart';
+import 'package:lexilearn/English/MathOperationsGame.dart';
+import 'package:lexilearn/Numbers/Addition.dart';
 
 void main() {
   runApp(MyApp());
@@ -107,6 +112,7 @@ class IntroductionPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenDyslexic',
                 ),
               ),
             ),
@@ -483,7 +489,7 @@ class TamilPage extends StatelessWidget {
               ),
               SizedBox(height: 20), // Adjust spacing between sections
               Section(
-                title: 'மெய் எழுத்து கற்போம்',
+                title: 'மெய்யெழுத்து கற்போம்',
                 onTap: () {
                   Navigator.push(
                     context,
@@ -495,13 +501,12 @@ class TamilPage extends StatelessWidget {
               ),
               SizedBox(height: 20), // Adjust spacing between sections
               Section(
-                title: 'மெய் எழுத்து பயிற்சி',
+                title: 'மெய்யெழுத்து பயிற்சி',
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TamilMaeiAezhuthuPayirchi(),
-                    ),
+                        builder: (context) => TamilMaeiAezhuthuPayirchi()),
                   );
                 },
               ),
@@ -531,7 +536,7 @@ class TamilPage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Section(
-                title: 'தமிழ் இசை பயிற்சி',
+                title: 'தமிழ் பாசுரப் பயிற்சி',
                 onTap: () {
                   Navigator.push(
                     context,
@@ -608,7 +613,7 @@ class Numbers extends StatelessWidget {
               ),
               SizedBox(height: 20), // Adjust spacing between sections
               Section(
-                title: 'Count Number',
+                title: 'Counting Game',
                 onTap: () {
                   Navigator.push(
                     context,
@@ -626,6 +631,66 @@ class Numbers extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => TypicallyExercise(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20),
+              Section(
+                title: 'Addition',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MathGameAddition(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20),
+              Section(
+                title: 'Subtraction',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MathGameSubtraction(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20),
+              Section(
+                title: 'Multiplication',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MathGameMultiplication(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20),
+              Section(
+                title: 'Division',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MathGameDivision(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20),
+              Section(
+                title: 'Solve Math Operations',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MathGame(),
                     ),
                   );
                 },

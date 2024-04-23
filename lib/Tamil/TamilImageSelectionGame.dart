@@ -214,50 +214,69 @@ class _WordMatchingGameState extends State<TamilImageSelectionGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tamil Image Quest'),
-        backgroundColor: Colors.blue,
+        title: Text('படம் கண்டு சொல் ',
+            style: TextStyle(
+                fontFamily: 'openDyslexic',
+                fontSize: 20,
+                fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.transparent,
       ),
+      extendBodyBehindAppBar: true,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: [
-            Text(
-              selectedWord.toUpperCase(),
-              style: TextStyle(
-                  fontSize: 24,
-                  fontFamily: 'openDyslexic',
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              children: List.generate(displayedImages.length, (index) {
-                String image = displayedImages[index];
-                return GestureDetector(
-                  onTap: () {
-                    if (!isCorrect) {
-                      checkMatch(image);
-                    }
-                  },
-                  child: Container(
-                    margin: EdgeInsets.all(8),
-                    child: Image.asset(
-                      "images2/$image",
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/background.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      selectedWord.toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontFamily: 'openDyslexic',
+                          fontWeight: FontWeight.bold),
                     ),
-                  ),
-                );
-              }),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _setNextQuestion();
-              },
-              child: Text('புதுப்பி'),
+                    GridView.count(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      children: List.generate(displayedImages.length, (index) {
+                        String image = displayedImages[index];
+                        return GestureDetector(
+                          onTap: () {
+                            if (!isCorrect) {
+                              checkMatch(image);
+                            }
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(8),
+                            child: Image.asset(
+                              "images2/$image",
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        _setNextQuestion();
+                      },
+                      child: Text('புதுப்பி'),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
